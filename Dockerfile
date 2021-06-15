@@ -1,7 +1,7 @@
-ARG CUDA_IMAGE=nvidia/cuda:9.0-runtime
+ARG CUDA_IMAGE=nvidia/cuda:11.2.0-runtime
 FROM ${CUDA_IMAGE}
 
-ARG DOCKER_CE_VERSION=5:18.09.1~3-0~ubuntu-xenial
+ARG DOCKER_CE_VERSION=5:20.10.5~3-0~ubuntu-focal
 
 
 RUN apt-get update -q && \
@@ -10,8 +10,9 @@ RUN apt-get update -q && \
         ca-certificates \
         curl \
         gnupg-agent \
-        software-properties-common && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+        software-properties-common
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository \
        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
        $(lsb_release -cs) \
@@ -22,14 +23,14 @@ RUN apt-get update -q && \
 RUN set -eux; \
     apt-get update -q && \
 	apt-get install -yq \
-		btrfs-tools \
+		btrfs-progs \
 		e2fsprogs \
 		iptables \
 		xfsprogs \
 		xz-utils \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
 		pigz \
-        zfs \
+#        zfs \
 		wget
 
 
